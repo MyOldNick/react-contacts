@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+//react
+import { useEffect } from "react";
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { getAllContacts } from "./store/asyncActions";
+//bootstrap
+import { Container } from "react-bootstrap";
+//components
+import AddContact from "./components/AddContact";
+import TableComponent from "./components/Table";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector((state) => state.contactsReducer.contacts);
+
+  useEffect(() => {
+    if (contacts.length <= 0) {
+      dispatch(getAllContacts());
+    }
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <AddContact />
+      <TableComponent contacts={contacts} />
+    </Container>
   );
-}
+};
 
 export default App;
